@@ -1,9 +1,7 @@
-from ast import Return
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
-
+from .models import Product
 # Create your views here.
 
 @api_view(['GET'])
@@ -23,3 +21,13 @@ def getRoutes(request):
         '/api/products/update/<id>/',
     ]
     return Response(routes)
+
+@api_view(['GET'])
+def getProducts(request):
+    products = Product.objects.all()
+    return Response(products)
+
+@api_view(['GET'])
+def getProduct(request, pk):
+    product = Product.objects.get(_id=pk)
+    return Response(product)
