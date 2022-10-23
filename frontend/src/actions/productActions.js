@@ -4,7 +4,7 @@ import {
     PRODUCT_LIST_FAIL,
 } from "../constants/productConstants";
 import { PRODUCT_LIST_ENDPOINT } from "../constants/apiConstants"
-import axios from axios
+import axios from 'axios'
 
 export const listProducts = () => async (dispatch) => {
     try {
