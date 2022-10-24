@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useParams, Link } from 'react-router-dom'
+import { useLocation, useParams, Link, useNavigate } from 'react-router-dom'
 import { addToCart } from '../actions/cartActions'
-import { Row, Col, Image, ListGroup, Form, Button } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Form, Button, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 
 function CartScreen() {
+
+  const navigate = useNavigate()
 
   const params = useParams()
   const productId = params.id
@@ -30,10 +32,14 @@ function CartScreen() {
     console.log('Removed', id)
   }
 
+  const checkoutHandler = () => {
+    navigate('/shipping')
+  }
+
   return (
     <Row>
       <Link className='links' to='/home'><i className="fa-solid fa-left-long"></i> Back</Link>
-      <Col md={9}>
+      <Col md={8}>
         <h1>Cart</h1>
         {cartItems.length < 1 ? (
           <Message severity='info' error='Oooops!! Seems like you have not started shopping yet.'/>
@@ -72,6 +78,35 @@ function CartScreen() {
             ))}
           </ListGroup>
         )}
+      </Col>
+      <Col md={4}>
+        <h3>Cart Summary</h3>
+        <Card>
+          <ListGroup>
+            <ListGroup.Item>
+              <Row>
+                <Col><strong>Items SubTotal:</strong></Col>
+                <Col>{cartItems.reduce((acc, item) => acc + Number(item.qty), 0)} items</Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Col><strong>Price SubTotal:</strong></Col>
+                <Col>${cartItems.reduce((acc, item) => acc + Number(item.qty) * Number(item.price), 0)}</Col>
+              </Row>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row>
+                <Button
+                  className='bg'
+                  disabled={cartItems.length < 1}
+                  onClick={checkoutHandler}>
+                    Proceed to Checkout
+                  </Button>
+              </Row>
+            </ListGroup.Item>
+          </ListGroup>
+        </Card>
       </Col>
     </Row>
   )
