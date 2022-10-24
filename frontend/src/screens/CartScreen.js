@@ -82,7 +82,7 @@ function CartScreen() {
       <Col md={4}>
         <h3>Cart Summary</h3>
         <Card>
-          <ListGroup>
+          <ListGroup className='body-bg'>
             <ListGroup.Item>
               <Row>
                 <Col><strong>Items SubTotal:</strong></Col>
