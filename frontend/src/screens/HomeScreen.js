@@ -4,6 +4,8 @@ import productList from '../store'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
 
 function HomeScreen() {
 
@@ -22,9 +24,9 @@ function HomeScreen() {
     <div>
       <h1>Products</h1>
       {loading ? (
-        <h1>Loading!!!</h1>
+        <Loader />
       ) : error ? (
-        <h1>Error</h1>
+        <Message severity='error' error={error} />
       ) : (
           <Row>
           {products.map(product => (
