@@ -56,13 +56,13 @@ function ProfileScreen() {
 
   return (
     <div style={{marginTop: '3rem'}}>
-      {error && <Message severity='error' error={error}/>}
-      {loading && <Loader/>}
 
       <Row>
         
         <Col md={4}>
             <h3>Profile/Update</h3>
+            {error && <Message severity='error' error={error}/>}
+            {loading && <Loader/>}
             <Card className='body-bg'>
                 {message && <Message severity='info' error={message} />}
               <Form className='form-p' onSubmit={submitHandler}>
