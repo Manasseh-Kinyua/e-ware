@@ -1,12 +1,19 @@
 import React from 'react'
 import { Navbar, Nav, Row, Container, NavDropdown } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
+import { logout } from '../actions/userActions'
 
 function Header() {
 
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
+
+    const dispatch = useDispatch()
+
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
 
   return (
     <header className='fixed-nav'>
@@ -35,7 +42,7 @@ function Header() {
                                         to='/profile'>
                                             <NavDropdown.Item>Profile</NavDropdown.Item>
                                     </LinkContainer>
-                                    <NavDropdown.Item>Logout</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                             </NavDropdown>
                         ) : (
                             <LinkContainer to='/login'>
