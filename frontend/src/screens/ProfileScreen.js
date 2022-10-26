@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Card, Form, Button } from 'react-bootstrap'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { getUserDetails, login, register } from '../actions/userActions'
+import { getUserDetails, login, register, updateUserProfile } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 function ProfileScreen() {
 
@@ -29,12 +30,16 @@ function ProfileScreen() {
     const { loading, error, user } = userDetails
     console.log(user)
 
+    const userUpdateProfile = useSelector(state => state.userUpdateProfile)
+    const { success } = userUpdateProfile
+
     useEffect(() => {
       if(!userInfo) {
         navigate('/login?redirect=/profile')
       }else {
 
-        if(!user || !user.name || userInfo._id !== user._id) {
+        if(!user || !user.name || success || userInfo._id !== user._id) {
+          dispatch({type: USER_UPDATE_PROFILE_RESET})
           dispatch(getUserDetails('profile'))
         } else {
           setName(user.name)
@@ -42,7 +47,7 @@ function ProfileScreen() {
         }
 
       }
-    }, [dispatch, userInfo, user])
+    }, [dispatch, userInfo, user, success])
 
     const submitHandler = (e) => {
       e.preventDefault()
@@ -50,7 +55,12 @@ function ProfileScreen() {
       if(password !== confirmPassword) {
         setMessage('Passwords do not match')
       }else {
-        // dispatch(register(name, email, password))
+        dispatch(updateUserProfile({
+          'id': user._id,
+          'name': name,
+          'email': email,
+          'password': password
+        }))
       }
     }
 
@@ -91,7 +101,6 @@ function ProfileScreen() {
                 <Form.Group className='form-m' controlId='password'>
                   <Form.Label>Password</Form.Label>
                   <Form.Control
-                    required
                     type='password'
                     placeholder='Enter password'
                     value={password}
@@ -102,7 +111,6 @@ function ProfileScreen() {
                 <Form.Group className='form-m' controlId='confirmpassword'>
                   <Form.Label>Confirm Password</Form.Label>
                   <Form.Control
-                    required
                     type='password'
                     placeholder='Enter password again'
                     value={confirmPassword}
