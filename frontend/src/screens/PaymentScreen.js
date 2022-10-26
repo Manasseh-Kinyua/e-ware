@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Form, Row, Col, Button, FormGroup } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { savePaymentMethod } from '../actions/cartActions'
 import CheckoutSteps from '../components/CheckoutSteps'
 
 function PaymentScreen() {
@@ -16,13 +17,14 @@ function PaymentScreen() {
 
     const dispatch = useDispatch()
 
-    if(!shippingAddress) {
+    if(!shippingAddress.address) {
         navigate('/shipping')
     }
 
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log('submitted')
+        dispatch(savePaymentMethod(paymentMethod))
+        navigate('/placeorder')
     }
 
   return (
