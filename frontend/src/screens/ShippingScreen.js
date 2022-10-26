@@ -5,44 +5,33 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { login, register } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { saveShippingAddress } from '../actions/cartActions'
 
 function ShippingScreen() {
 
     const navigate = useNavigate()
 
-    const [address, setAddress] = useState('')
-    const [city, setCity] = useState('')
-    const [postalCode, setPostalCode] = useState('')
-    const [country, setCountry] = useState('')
+    const cart = useSelector(state => state.cart)
+    const {shippingAddress} = cart
 
-    const location = useLocation()
-    const searchParams = new URLSearchParams(location.search)
-    const redirect = searchParams.get('redirect') ? searchParams.get('redirect') : '/home'
+    const [address, setAddress] = useState(shippingAddress.address)
+    const [city, setCity] = useState(shippingAddress.city)
+    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+    const [country, setCountry] = useState(shippingAddress.country)
 
     const dispatch = useDispatch()
-
-    // const userRegister = useSelector(state => state.userRegister)
-    // const { loading, error, userInfo } = userRegister
-
-    useEffect(() => {
-    //   if(userInfo) {
-    //     navigate(redirect)
-    //   }
-    })
 
     const submitHandler = (e) => {
       e.preventDefault()
 
-    //   if(password !== confirmPassword) {
-    //     setMessage('Passwords do not match')
-    //   }else {
-    //     dispatch(register(name, email, password))
-    //   }
+      dispatch(saveShippingAddress({
+        address, city, postalCode, country
+      }))
     }
 
   return (
     <div style={{marginTop: '3rem'}}>
-      <h3 style={{textAlign: 'center'}}>Sign In</h3>
+      <h3 style={{textAlign: 'center'}}>Enter Shipping Info</h3>
       {/* {error && <Message severity='error' error={error}/>}
       {loading && <Loader/>} */}
 
@@ -50,49 +39,48 @@ function ShippingScreen() {
         
         <Col md={6}>
             <Card className='body-bg'>
-                {message && <Message severity='info' error={message} />}
               <Form className='form-p' onSubmit={submitHandler}>
-                <Form.Group className='form-m' controlId='name'>
-                  <Form.Label>Name</Form.Label>
+                <Form.Group className='form-m' controlId='address'>
+                  <Form.Label>Address</Form.Label>
                   <Form.Control
                     required
                     type='text'
-                    placeholder='Enter your name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}>
+                    placeholder='Enter your address'
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}>
 
                   </Form.Control>
                 </Form.Group>
-                <Form.Group className='form-m' controlId='email'>
-                  <Form.Label>Email Address</Form.Label>
+                <Form.Group className='form-m' controlId='city'>
+                  <Form.Label>City</Form.Label>
                   <Form.Control
                     required
-                    type='email'
-                    placeholder='Enter email address'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}>
+                    type='text'
+                    placeholder='Enter city'
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}>
 
                   </Form.Control>
                 </Form.Group>
-                <Form.Group className='form-m' controlId='password'>
-                  <Form.Label>Password</Form.Label>
+                <Form.Group className='form-m' controlId='postalCode'>
+                  <Form.Label>Postal code</Form.Label>
                   <Form.Control
                     required
-                    type='password'
-                    placeholder='Enter password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}>
+                    type='text'
+                    placeholder='Enter postal code'
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}>
 
                   </Form.Control>
                 </Form.Group>
-                <Form.Group className='form-m' controlId='confirmpassword'>
-                  <Form.Label>Confirm Password</Form.Label>
+                <Form.Group className='form-m' controlId='country'>
+                  <Form.Label>Enter Country</Form.Label>
                   <Form.Control
                     required
-                    type='password'
-                    placeholder='Enter password again'
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}>
+                    type='text'
+                    placeholder='Enter country'
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}>
 
                   </Form.Control>
                 </Form.Group>
@@ -100,11 +88,8 @@ function ShippingScreen() {
                     type='submit'
                     className='bg'
                     style={{width: '100%', marginTop: '1.5rem'}}>
-                    Sign Up
+                    Submit
                   </Button>
-                <strong style={{textAlign: 'center'}}>
-                  Already a Customer? <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>Sign In</Link>
-                </strong>
               </Form>
             </Card>
         </Col>
