@@ -34,6 +34,14 @@ h3 {
   color: white;
 }
 
+.form-p {
+  padding: 1.5rem;
+}
+
+.form-m {
+  margin: 1.5rem;
+}
+
 .flexed {
   display: flex;
   flex-wrap: wrap;
