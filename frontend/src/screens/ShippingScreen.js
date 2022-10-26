@@ -6,6 +6,7 @@ import { login, register } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { saveShippingAddress } from '../actions/cartActions'
+import CheckoutSteps from '../components/CheckoutSteps'
 
 function ShippingScreen() {
 
@@ -27,6 +28,7 @@ function ShippingScreen() {
       dispatch(saveShippingAddress({
         address, city, postalCode, country
       }))
+      navigate('/payment')
     }
 
   return (
@@ -34,6 +36,7 @@ function ShippingScreen() {
       <h3 style={{textAlign: 'center'}}>Enter Shipping Info</h3>
       {/* {error && <Message severity='error' error={error}/>}
       {loading && <Loader/>} */}
+      <CheckoutSteps step1 step2/>
 
       <Row className="justify-content-md-center my-auto">
         
