@@ -73,6 +73,8 @@ def getOrderById(request, pk):
 @permission_classes([IsAuthenticated])
 def updateToPaid(request, pk):
     order = Order.objects.get(_id=pk)
+    print('Primary Key..............', pk)
+    print('Primary Key..............', order._id)
 
     order.isPaid = True
     order.paidAt = datetime.now()

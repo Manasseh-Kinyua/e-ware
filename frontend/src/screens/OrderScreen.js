@@ -4,19 +4,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import Message from '../components/Message'
 import { Link } from 'react-router-dom'
-import { getOrderDetails } from '../actions/orderActions'
+import { getOrderDetails, payOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
+import { GET_ORDER_BY_ID_ENDPOINT } from '../constants/apiConstants'
+import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
 function OrderScreen() {
 
   const params = useParams()
   const orderId = params.id
+  console.log(orderId)
+  console.log(`${GET_ORDER_BY_ID_ENDPOINT}${orderId}/pay/`)
 
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
 
   const orderDetails = useSelector(state => state.orderDetails)
   const {order, error, loading} = orderDetails
+
+  const orderPay = useSelector(state => state.orderPay)
+  const {success: successPay, error: errorPay, loading: loadingPay} = orderPay
 
   if(!loading && !error) {
     order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
@@ -30,10 +37,15 @@ function OrderScreen() {
     if(!userInfo) {
         navigate('/login')
     }
-    if(!order) {
+    if(!order || successPay || order._id !== Number(orderId)) {
+        dispatch({type: ORDER_PAY_RESET})
         dispatch(getOrderDetails(orderId))
     }
-  }, [dispatch, orderId, userInfo])
+  }, [dispatch, orderId, userInfo, successPay])
+
+  const paymentHandler = (orderId) => {
+    dispatch(payOrder(orderId))
+  }
 
 
   return (
@@ -150,6 +162,23 @@ function OrderScreen() {
                     <Col>${order.totalPrice}</Col>
                   </Row>
                 </ListGroup.Item>
+                {loadingPay && (
+                  <ListGroup.Item>
+                    <Loader/>
+                  </ListGroup.Item>
+                )}
+                {errorPay && (
+                  <ListGroup.Item>
+                    <Message severity='error' error={errorPay} />
+                  </ListGroup.Item>
+                )}
+                {!order.isPaid ? (
+                  <ListGroup.Item>
+                    <Button style={{width: '100%'}} className='bg' onClick={paymentHandler}>Pay</Button>
+                  </ListGroup.Item>
+                ) : (
+                  <Message severity='success' error='Paid' />
+                )}
               </ListGroup>
             </Card>
         </Col>

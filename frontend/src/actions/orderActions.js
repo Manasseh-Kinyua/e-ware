@@ -13,7 +13,7 @@ import {
 } from "../constants/orderConstants";
 import { CART_CLEAR_ITEMS } from "../constants/cartConstants";
 import axios from 'axios';
-import { CREATE_ORDER_ENDPOINT, GET_ORDER_BY_ID_ENDPOINT } from "../constants/apiConstants";
+import { BASE_URL, CREATE_ORDER_ENDPOINT, GET_ORDER_BY_ID_ENDPOINT } from "../constants/apiConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
     try {
@@ -98,7 +98,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
     }
 }
 
-export const payOrder = (id) => async (dispatch, getState) => {
+export const payOrder = (orderId) => async (dispatch, getState) => {
     try {
 
         dispatch({
@@ -117,7 +117,7 @@ export const payOrder = (id) => async (dispatch, getState) => {
         }
     
         const {data} = await axios.put(
-            `${GET_ORDER_BY_ID_ENDPOINT}${id}`,
+            `${BASE_URL}orders/${orderId}/pay/`,
             {},
             config
         )
