@@ -69,7 +69,7 @@ def getOrderById(request, pk):
     except:
         return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view({'PUT'})
+@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateToPaid(request, pk):
     order = Order.objects.get(_id=pk)
