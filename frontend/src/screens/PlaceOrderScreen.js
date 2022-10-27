@@ -6,12 +6,12 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import Message from '../components/Message'
 import { Link } from 'react-router-dom'
 import { createOrder } from '../actions/orderActions'
+import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 
 function PlaceOrderScreen() {
 
   const orderCreate = useSelector(state => state.orderCreate)
   const {order, error, success} = orderCreate
-  console.log(order)
 
   const navigate = useNavigate()
 
@@ -27,6 +27,7 @@ function PlaceOrderScreen() {
   useEffect(() => {
     if(success) {
       navigate(`/order/${order._id}`)
+      dispatch({type: ORDER_CREATE_RESET})
     }
   }, [success])
 
@@ -124,9 +125,11 @@ function PlaceOrderScreen() {
                     <Col>${cart.totalPrice}</Col>
                   </Row>
                 </ListGroup.Item>
-                <ListGroup.Item>
-                  loading
+                {error && (
+                  <ListGroup.Item>
+                    <Message severity='success' error={error}/>
                 </ListGroup.Item>
+                )}
                 <ListGroup.Item>
                   <Button style={{width: '100%'}} className='bg' onClick={placeOrder}>Place Order</Button>
                 </ListGroup.Item>
