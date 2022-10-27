@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Row, Col, Image, Button, ListGroup, Card, ListGroupItem } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import Message from '../components/Message'
 import { Link } from 'react-router-dom'
+import { createOrder } from '../actions/orderActions'
 
 function PlaceOrderScreen() {
+
+  const orderCreate = useSelector(state => state.orderCreate)
+  const {order, error, success} = orderCreate
+  console.log(order)
+
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
 
   const cart = useSelector(state => state.cart)
 
@@ -15,8 +24,22 @@ function PlaceOrderScreen() {
   cart.taxPrice = (0.082 * cart.itemsPrice).toFixed(2)
   cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 
+  useEffect(() => {
+    if(success) {
+      navigate(`/order/${order._id}`)
+    }
+  }, [success])
+
   const placeOrder = () => {
-    console.log('order placed')
+    dispatch(createOrder({
+      orderItems: cart.cartItems,
+      shippingAddress: cart.shippingAddress,
+      paymentMethod: cart.paymentMethod,
+      itemsPrice: cart.itemsPrice,
+      shippingPrice: cart.shippingPrice,
+      taxPrice: cart.taxPrice,
+      totalPrice: cart.totalPrice
+    }))
   }
 
   return (
