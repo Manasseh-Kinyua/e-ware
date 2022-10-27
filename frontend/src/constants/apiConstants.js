@@ -9,3 +9,4 @@ export const GET_USER_PROFILE_ENDPOINT = `${BASE_URL}users/`
 export const UPDATE_USER_PROFILE_ENDPOINT = `${BASE_URL}users/profile/update/`
 
 export const CREATE_ORDER_ENDPOINT = `${BASE_URL}orders/add/`
+export const GET_ORDER_BY_ID_ENDPOINT = `${BASE_URL}orders/`
