@@ -10,10 +10,10 @@ function PlaceOrderScreen() {
 
   const cart = useSelector(state => state.cart)
 
-  cart.itemsPrice = 1
-  cart.shippingPrice = 1
-  cart.taxPrice = 1
-  cart.totalPrice = 1
+  cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)
+  cart.shippingPrice = (cart.itemsPrice > 1000 ? 0 : 10).toFixed(2)
+  cart.taxPrice = (0.082 * cart.itemsPrice).toFixed(2)
+  cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(2)
 
   const placeOrder = () => {
     console.log('order placed')
