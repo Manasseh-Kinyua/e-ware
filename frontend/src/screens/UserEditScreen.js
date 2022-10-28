@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form, Row, Col, Card, Button } from 'react-bootstrap'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUser } from '../actions/userActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 
 function UserEditScreen() {
 
@@ -27,14 +28,30 @@ function UserEditScreen() {
     console.log(user)
 
     useEffect(() => {
-        if(!user || !user.name || user._id !== Number(params.id)) {
-            dispatch(getUserDetails(params.id))
+        if(successUpdate) {
+            dispatch({type: USER_UPDATE_RESET})
+            navigate('/admin/userlist')
         } else {
-            setName(user.name)
-            setEmail(user.email)
-            setIsAdmin(user.isAdmin)
+            if(!user || !user.name || user._id !== Number(params.id)) {
+                dispatch(getUserDetails(params.id))
+            } else {
+                setName(user.name)
+                setEmail(user.email)
+                setIsAdmin(user.isAdmin)
+            }
         }
-    }, [dispatch, params.id, user])
+    }, [dispatch, params.id, user, successUpdate])
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+
+        dispatch(updateUser({
+            _id: user._id,
+            name,
+            email,
+            isAdmin
+        }))
+    }
 
   return (
     <div>
@@ -48,7 +65,7 @@ function UserEditScreen() {
                 <Col md={6}>
                     <h4>Edit User</h4>
                     <Card className='body-bg'>
-                        <Form className='form-p'>
+                        <Form className='form-p' onSubmit={submitHandler}>
                             <Form.Group className='form-m' controlId='name'>
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
@@ -76,6 +93,8 @@ function UserEditScreen() {
 
                                     </Form.Check>
                             </Form.Group>
+                            {loadingUpdate && <Loader/>}
+                            {errorUpdate && <Message severity='warning' error={errorUpdate} />}
                             <Button
                                 style={{width: '100%'}}
                                 className='bg'
