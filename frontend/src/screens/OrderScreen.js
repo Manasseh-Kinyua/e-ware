@@ -12,9 +12,7 @@ import { ORDER_PAY_RESET } from '../constants/orderConstants'
 function OrderScreen() {
 
   const params = useParams()
-  const orderId = params.id
-  console.log(orderId)
-  console.log(`${GET_ORDER_BY_ID_ENDPOINT}${orderId}/pay/`)
+  const orderId = Number(params.id)
 
   const userLogin = useSelector(state => state.userLogin)
   const {userInfo} = userLogin
@@ -43,8 +41,8 @@ function OrderScreen() {
     }
   }, [dispatch, orderId, userInfo, successPay])
 
-  const paymentHandler = (orderId) => {
-    dispatch(payOrder(orderId))
+  const paymentHandler = () => {
+    dispatch(payOrder(params.id))
   }
 
 

@@ -117,7 +117,7 @@ export const payOrder = (orderId) => async (dispatch, getState) => {
         }
     
         const {data} = await axios.put(
-            `${BASE_URL}orders/${orderId}/pay/`,
+            `${GET_ORDER_BY_ID_ENDPOINT}${orderId}/pay/`,
             {},
             config
         )
