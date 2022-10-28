@@ -109,11 +109,17 @@ function OrderScreen() {
             {order.orderItems.length === 0 ? (
               <ListGroup className='mt-3' variant='flush'>
                 <ListGroup.Item>
+                  <h5><p>Order Items </p></h5>
+                </ListGroup.Item>
+                <ListGroup.Item>
                   <Message severity='info' error='Order list is empty'/>
                 </ListGroup.Item>
               </ListGroup>
             ) : (
               <ListGroup className='mt-3' variant='flush'>
+                <ListGroup.Item>
+                  <h5><p>Order Items </p></h5>
+                </ListGroup.Item>
                 {order.orderItems.map((item) => (
                   <ListGroup.Item key={item.product}>
                     <Row>
