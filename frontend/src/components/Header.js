@@ -59,15 +59,15 @@ function Header() {
                                 title='ADMIN'
                                 id='username'>
                                     <LinkContainer
-                                        to='/userlist'>
+                                        to='/admin/userlist'>
                                             <NavDropdown.Item>Users</NavDropdown.Item>
                                     </LinkContainer>
                                     <LinkContainer
-                                        to='/productlist'>
+                                        to='/admin/productlist'>
                                             <NavDropdown.Item>Products</NavDropdown.Item>
                                     </LinkContainer>
                                     <LinkContainer
-                                        to='/orders'>
+                                        to='/admin/orders'>
                                             <NavDropdown.Item>Orders</NavDropdown.Item>
                                     </LinkContainer>
                             </NavDropdown>
