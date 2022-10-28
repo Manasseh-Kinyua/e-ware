@@ -54,6 +54,25 @@ function Header() {
                             </LinkContainer>
                         )}
 
+                        {userInfo && userInfo.isAdmin && (
+                            <NavDropdown
+                                title='ADMIN'
+                                id='username'>
+                                    <LinkContainer
+                                        to='/userlist'>
+                                            <NavDropdown.Item>Users</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer
+                                        to='/productlist'>
+                                            <NavDropdown.Item>Products</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <LinkContainer
+                                        to='/orders'>
+                                            <NavDropdown.Item>Orders</NavDropdown.Item>
+                                    </LinkContainer>
+                            </NavDropdown>
+                        )}
+
                         {/* <Nav.Link href="#" disabled>
                         Link
                         </Nav.Link> */}
