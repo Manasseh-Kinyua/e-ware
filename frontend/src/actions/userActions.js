@@ -11,6 +11,10 @@ import {
     USER_LIST_SUCCESS,
     USER_LIST_FAIL,
 
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAIL,
+
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
@@ -24,7 +28,7 @@ import {
     USER_LOGOUT,
 } from "../constants/userConstants";
 import axios from 'axios'
-import { GET_ALL_USERS, GET_USER_PROFILE_ENDPOINT, UPDATE_USER_PROFILE_ENDPOINT, USER_LOGIN_ENDPOINT, USER_REGISTER_ENDPOINT } from "../constants/apiConstants";
+import { DELETE_USER_ENDPOINT, GET_ALL_USERS, GET_USER_PROFILE_ENDPOINT, UPDATE_USER_PROFILE_ENDPOINT, USER_LOGIN_ENDPOINT, USER_REGISTER_ENDPOINT } from "../constants/apiConstants";
 
 export const register = (name, email, password) => async (dispatch) => {
     try {
@@ -221,6 +225,43 @@ export const listUsers = () => async (dispatch, getState) => {
     } catch(error) {
         dispatch({
             type: USER_LIST_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message
+        })
+    }
+}
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: USER_DELETE_REQUEST
+        })
+
+        const {
+            userLogin:{userInfo}
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const {data} = await axios.delete(
+            `${DELETE_USER_ENDPOINT}${id}/`,
+            config
+        )
+
+        dispatch({
+            type: USER_DELETE_SUCCESS,
+            payload: data
+        })
+
+    } catch(error) {
+        dispatch({
+            type: USER_DELETE_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message
