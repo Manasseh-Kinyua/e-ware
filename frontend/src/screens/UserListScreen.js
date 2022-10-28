@@ -39,7 +39,7 @@ function UserListScreen() {
       ) : error ? (
         <Message severity='error' error={error} />
       ) : (
-        <Table responsive hover striped className='body-bg table-sm'>
+        <Table responsive hover striped className='table-sm'>
             <thead>
                 <tr>
                     <th>#</th>
