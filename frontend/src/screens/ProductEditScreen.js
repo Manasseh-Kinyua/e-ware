@@ -4,6 +4,9 @@ import { Form, Row, Col, Button, Card } from 'react-bootstrap'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import axios from 'axios'
+import { PRODUCT_UPLOAD_IMAGE_ENDPOINT } from '../constants/apiConstants'
+import Loader from '../components/Loader'
 
 function ProductEditScreen() {
 
@@ -62,6 +65,36 @@ function ProductEditScreen() {
         }))
     }
 
+    const uploadImageHandler = async (e) => {
+      const file = e.target.files[0]
+      const formData = new FormData()
+
+      formData.append('image', file)
+      formData.append('product_id', params.id)
+
+      setUploading(true)
+
+      try {
+
+        const config = {
+          headers: {
+          'Content-Type': 'multipart/form-data'
+          }
+        }
+
+        const {data} = await axios.post(
+          PRODUCT_UPLOAD_IMAGE_ENDPOINT,
+          formData,
+          config
+        )
+        setImage(data)
+        setUploading(false)
+
+      } catch(error) {
+        setUploading(false)
+      }
+    }
+
   return (
     <div>
       <h3 style={{textAlign: 'center'}}>Product/Edit</h3>
@@ -104,7 +137,12 @@ function ProductEditScreen() {
                     onChange={(e) => setImage(e.target.value)}
                     >
 
-                  </Form.Control>
+                  </Form.Control> 
+                  <input
+                    type='file'
+                    id='image-upload'
+                    onChange={uploadImageHandler}/>
+                    {uploading && <Loader/>}
                 </Form.Group>
                 <Form.Group className='form-m' controlId='brand'>
                   <Form.Label>Brand</Form.Label>

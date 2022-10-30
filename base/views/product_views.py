@@ -61,7 +61,6 @@ def updateProduct(request, pk):
     return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([IsAdminUser])
 def uploadImage(request):
     data = request.data
 
