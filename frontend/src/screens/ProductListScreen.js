@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { createProduct, deleteProduct, listProducts } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
 function ProductListScreen() {
 
@@ -25,6 +26,7 @@ function ProductListScreen() {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch({type: PRODUCT_CREATE_RESET})
         if(!userInfo.isAdmin) {
             navigate('/profile')
         }
