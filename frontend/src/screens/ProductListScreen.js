@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Table, Row, Col, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { listProducts } from '../actions/productActions'
+import { deleteProduct, listProducts } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -17,6 +17,10 @@ function ProductListScreen() {
     const {error, loading, products} = productList
     console.log(products)
 
+    const productDelete = useSelector(state => state.productDelete)
+    const {error: errorDelete, loading: loadingDelete, success: successDelete} = productDelete
+    console.log(products)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -25,11 +29,15 @@ function ProductListScreen() {
         } else {
             dispatch(listProducts())
         }
-    }, [dispatch, userInfo, navigate])
+    }, [dispatch, userInfo, navigate, successDelete])
 
     const createProductHandler = () => {}
 
-    const deleteHandler = () => {}
+    const deleteHandler = (id) => {
+        if(window.confirm('Are you sure you eant to delete this product?')) {
+            dispatch(deleteProduct(id))
+        }
+    }
 
   return (
     <div>
