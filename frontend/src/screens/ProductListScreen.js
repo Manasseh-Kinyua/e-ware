@@ -29,6 +29,8 @@ function ProductListScreen() {
 
     const createProductHandler = () => {}
 
+    const deleteHandler = () => {}
+
   return (
     <div>
       <Row>
@@ -36,7 +38,7 @@ function ProductListScreen() {
             <h1>Products</h1>
         </Col>
 
-        <Col className='align-items-right'>
+        <Col style={{textAlign: 'right'}}>
             <Button className='mr-3 mr-0 bg' onClick={createProductHandler}>
                 Create Product <i className='fas fa-plus'> </i>
             </Button>
@@ -48,7 +50,7 @@ function ProductListScreen() {
             ) : error ? (
                 <Message severity='error' error={error} />
             ) : (
-                <Table responsive hover className='table-sm'>
+                <Table striped responsive hover className='table-sm'>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -68,8 +70,19 @@ function ProductListScreen() {
                                 <td>${product.price}</td>
                                 <td>{product.category}</td>
                                 <td>{product.brand}</td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <Link to={`/admin/product/${product._id}/edit`}>
+                                        <Button className='btn-sm bg'><i className="fa-sharp fa-solid fa-pen-to-square"></i></Button>
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Button
+                                        className='bg btn-sm'
+                                        onClick={() => deleteHandler(product._id)}
+                                        >
+                                            <i className="fa-solid fa-trash"></i>
+                                    </Button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
