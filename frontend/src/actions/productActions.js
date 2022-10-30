@@ -14,8 +14,12 @@ import {
     PRODUCT_CREATE_REQUEST,
     PRODUCT_CREATE_SUCCESS,
     PRODUCT_CREATE_FAIL,
+
+    PRODUCT_UPDATE_REQUEST,
+    PRODUCT_UPDATE_SUCCESS,
+    PRODUCT_UPDATE_FAIL,
 } from "../constants/productConstants";
-import { PRODUCT_LIST_ENDPOINT, PRODUCT_DETAILS_ENDPOINT, PRODUCT_DELETE_ENDPOINT, PRODUCT_CREATE_ENDPOINT } from "../constants/apiConstants"
+import { PRODUCT_LIST_ENDPOINT, PRODUCT_DETAILS_ENDPOINT, PRODUCT_DELETE_ENDPOINT, PRODUCT_CREATE_ENDPOINT, PRODUCT_UPDATE_ENDPOINT } from "../constants/apiConstants"
 import axios from 'axios'
 
 export const listProducts = () => async (dispatch) => {
@@ -132,6 +136,49 @@ export const createProduct = () => async (dispatch, getState) => {
     } catch(error) {
         dispatch({
             type: PRODUCT_CREATE_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message
+        })
+    }
+}
+
+export const updateProduct = (product) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: PRODUCT_UPDATE_REQUEST
+        })
+
+        const {
+            userLogin:{userInfo}
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        }
+
+        const {data} = await axios.put(
+            `${PRODUCT_UPDATE_ENDPOINT}${product._id}/`,
+            product,
+            config
+        )
+
+        dispatch({
+            type: PRODUCT_UPDATE_SUCCESS,
+            payload: data
+        })
+
+        dispatch({
+            type: PRODUCT_DETAILS_SUCCESS,
+            payload: data
+        })
+
+    } catch(error) {
+        dispatch({
+            type: PRODUCT_UPDATE_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message

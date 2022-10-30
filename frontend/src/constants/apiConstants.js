@@ -4,6 +4,7 @@ export const PRODUCT_LIST_ENDPOINT = `${BASE_URL}products/`
 export const PRODUCT_DETAILS_ENDPOINT = `${BASE_URL}products/`
 export const PRODUCT_DELETE_ENDPOINT = `${BASE_URL}products/delete/`
 export const PRODUCT_CREATE_ENDPOINT = `${BASE_URL}products/create/`
+export const PRODUCT_UPDATE_ENDPOINT = `${BASE_URL}products/update/`
 
 export const USER_LOGIN_ENDPOINT = `${BASE_URL}users/login/`
 export const USER_REGISTER_ENDPOINT = `${BASE_URL}users/register/`
