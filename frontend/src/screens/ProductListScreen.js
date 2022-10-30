@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Table, Row, Col, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { deleteProduct, listProducts } from '../actions/productActions'
+import { createProduct, deleteProduct, listProducts } from '../actions/productActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -15,23 +15,31 @@ function ProductListScreen() {
 
     const productList = useSelector(state => state.productList)
     const {error, loading, products} = productList
-    console.log(products)
 
     const productDelete = useSelector(state => state.productDelete)
     const {error: errorDelete, loading: loadingDelete, success: successDelete} = productDelete
-    console.log(products)
+
+    const productCreate = useSelector(state => state.productCreate)
+    const {error: errorCreate, loading: loadingCreate, success: successCreate, product: createdProduct} = productCreate
 
     const dispatch = useDispatch()
 
     useEffect(() => {
         if(!userInfo.isAdmin) {
             navigate('/profile')
+        }
+
+        if(successCreate) {
+            navigate(`/admin/product/${createdProduct._id}/edit`)
         } else {
             dispatch(listProducts())
         }
-    }, [dispatch, userInfo, navigate, successDelete])
+        
+    }, [dispatch, userInfo, navigate, successDelete, successCreate])
 
-    const createProductHandler = () => {}
+    const createProductHandler = () => {
+        dispatch(createProduct())
+    }
 
     const deleteHandler = (id) => {
         if(window.confirm('Are you sure you eant to delete this product?')) {
