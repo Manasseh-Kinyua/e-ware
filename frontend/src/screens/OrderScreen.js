@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import Message from '../components/Message'
 import { Link } from 'react-router-dom'
-import { getOrderDetails, payOrder } from '../actions/orderActions'
+import { deliverOrder, getOrderDetails, payOrder } from '../actions/orderActions'
 import Loader from '../components/Loader'
 import { GET_ORDER_BY_ID_ENDPOINT } from '../constants/apiConstants'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants'
 
 function OrderScreen() {
 
@@ -23,6 +23,9 @@ function OrderScreen() {
   const orderPay = useSelector(state => state.orderPay)
   const {success: successPay, error: errorPay, loading: loadingPay} = orderPay
 
+  const orderDeliver = useSelector(state => state.orderDeliver)
+  const {success: successDeliver, error: errorDeliver, loading: loadingDeliver} = orderDeliver
+
   if(!loading && !error) {
     order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
   }
@@ -35,14 +38,19 @@ function OrderScreen() {
     if(!userInfo) {
         navigate('/login')
     }
-    if(!order || successPay || order._id !== Number(orderId)) {
+    if(!order || successPay || order._id !== Number(orderId) || successDeliver) {
         dispatch({type: ORDER_PAY_RESET})
+        dispatch({type: ORDER_DELIVER_RESET})
         dispatch(getOrderDetails(orderId))
     }
-  }, [dispatch, orderId, userInfo, successPay])
+  }, [dispatch, orderId, userInfo, successPay, successDeliver])
 
   const paymentHandler = () => {
     dispatch(payOrder(params.id))
+  }
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(params.id))
   }
 
 
@@ -78,7 +86,7 @@ function OrderScreen() {
               </ListGroup.Item>
               {order.isDelivered ? (
                 <ListGroup.Item>
-                    <Message severity='seccess' error={`Delivered on ${order.deliveredAt}`} />
+                    <Message severity='success' error={`Delivered on ${order.deliveredAt.substring(0,10)}`} />
                 </ListGroup.Item>
               ) : (
                 <ListGroup.Item>
@@ -97,7 +105,7 @@ function OrderScreen() {
               </ListGroup.Item>
               {order.isPaid ? (
                 <ListGroup.Item>
-                    <Message severity='success' error={`Paid on ${order.paidAt}`}/>
+                    <Message severity='success' error={`Paid on ${order.paidAt.substring(0,10)}`}/>
                 </ListGroup.Item>
               ) : (
                 <ListGroup.Item>
@@ -182,6 +190,16 @@ function OrderScreen() {
                   </ListGroup.Item>
                 ) : (
                   <Message severity='success' error='Paid' />
+                )}
+                {order.isPaid && userInfo.isAdmin && !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button style={{width: '100%'}} className='bg' onClick={deliverHandler}>Delivered</Button>
+                  </ListGroup.Item>
+                )}
+                {order.isDelivered && (
+                  <ListGroup.Item>
+                    <Message severity='success' error='Delivered' />
+                  </ListGroup.Item>
                 )}
               </ListGroup>
             </Card>

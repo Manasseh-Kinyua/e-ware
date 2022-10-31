@@ -19,3 +19,4 @@ export const CREATE_ORDER_ENDPOINT = `${BASE_URL}orders/add/`
 export const GET_ORDER_BY_ID_ENDPOINT = `${BASE_URL}orders/`
 export const GET_MY_ORDERS_ENDPOINT = `${BASE_URL}orders/myorders/`
 export const GET_ALL_ORDERS_ENDPOINT = `${BASE_URL}orders/`
+export const UPDATE_ORDER_TO_DELIVERED_ENDPOINT = `${BASE_URL}orders/`
