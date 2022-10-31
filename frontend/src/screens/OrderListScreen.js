@@ -15,7 +15,6 @@ function OrderListScreen() {
 
     const orderList = useSelector(state => state.orderList)
     const {error, loading, orders} = orderList
-    console.log(orders)
 
     const dispatch = useDispatch()
 
