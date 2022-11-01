@@ -38,21 +38,6 @@ function Header() {
                             <Nav.Link><i className='fas fa-shopping-cart'></i>Cart</Nav.Link>
                         </LinkContainer>
 
-                        {userInfo ? (
-                            <NavDropdown
-                                title={userInfo.name}
-                                id='username'>
-                                    <LinkContainer
-                                        to='/profile'>
-                                            <NavDropdown.Item>Profile</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                            </NavDropdown>
-                        ) : (
-                            <LinkContainer to='/login'>
-                                <Nav.Link><i className='fas fa-user'></i>Login</Nav.Link>
-                            </LinkContainer>
-                        )}
 
                         {userInfo && userInfo.isAdmin && (
                             <NavDropdown
@@ -71,6 +56,22 @@ function Header() {
                                             <NavDropdown.Item>Orders</NavDropdown.Item>
                                     </LinkContainer>
                             </NavDropdown>
+                        )}
+
+                        {userInfo ? (
+                            <NavDropdown
+                                title={userInfo.name}
+                                id='username'>
+                                    <LinkContainer
+                                        to='/profile'>
+                                            <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
+                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                        ) : (
+                            <LinkContainer to='/login'>
+                                <Nav.Link><i className='fas fa-user'></i>Login</Nav.Link>
+                            </LinkContainer>
                         )}
 
                         {/* <Nav.Link href="#" disabled>
