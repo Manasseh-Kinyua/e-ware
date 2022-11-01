@@ -24,7 +24,6 @@ function ProductScreen() {
 
   const productDetails = useSelector(state => state.productDetails)
   const {loading, error, product} = productDetails
-  console.log(product.reviews)
 
   const productCreateReview = useSelector(state => state.productCreateReview)
   const {loading: loadingCreateReview, error: errorCreateReview, success: successCreateReview} = productCreateReview

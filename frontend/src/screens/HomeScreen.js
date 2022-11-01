@@ -6,6 +6,7 @@ import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import ProductCarousel from '../components/ProductCarousel'
 
 function HomeScreen() {
 
@@ -21,6 +22,7 @@ function HomeScreen() {
 
   return (
     <div>
+      <ProductCarousel  />
       <h1>Products</h1>
       {loading ? (
         <Loader />
@@ -29,7 +31,7 @@ function HomeScreen() {
       ) : (
           <Row>
           {products.map(product => (
-            <Col key={product._id}>
+            <Col md={3} key={product._id}>
               <Product product={product} />
             </Col>
           ))}

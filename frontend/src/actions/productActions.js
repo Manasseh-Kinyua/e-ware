@@ -7,6 +7,10 @@ import {
     PRODUCT_DETAILS_SUCCESS,
     PRODUCT_DETAILS_FAIL,
 
+    PRODUCT_TOP_RATED_REQUEST,
+    PRODUCT_TOP_RATED_SUCCESS,
+    PRODUCT_TOP_RATED_FAIL,
+
     PRODUCT_DELETE_REQUEST,
     PRODUCT_DELETE_SUCCESS,
     PRODUCT_DELETE_FAIL,
@@ -24,7 +28,7 @@ import {
     PRODUCT_UPDATE_SUCCESS,
     PRODUCT_UPDATE_FAIL,
 } from "../constants/productConstants";
-import { PRODUCT_LIST_ENDPOINT, PRODUCT_DETAILS_ENDPOINT, PRODUCT_DELETE_ENDPOINT, PRODUCT_CREATE_ENDPOINT, PRODUCT_UPDATE_ENDPOINT, CREATE_PRODUCT_REVIEW_ENDPOINT } from "../constants/apiConstants"
+import { PRODUCT_LIST_ENDPOINT, PRODUCT_DETAILS_ENDPOINT, PRODUCT_DELETE_ENDPOINT, PRODUCT_CREATE_ENDPOINT, PRODUCT_UPDATE_ENDPOINT, CREATE_PRODUCT_REVIEW_ENDPOINT, PRODUCT_TOP_RATED_ENDPOINT } from "../constants/apiConstants"
 import axios from 'axios'
 
 export const listProducts = () => async (dispatch) => {
@@ -43,6 +47,29 @@ export const listProducts = () => async (dispatch) => {
     }catch(error) {
         dispatch({
             type: PRODUCT_LIST_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message
+        })
+    }
+}
+
+export const listTopRatedProducts = () => async (dispatch) => {
+    try {
+
+        dispatch({
+            type: PRODUCT_TOP_RATED_REQUEST
+        })
+
+        const {data} = await axios.get(PRODUCT_TOP_RATED_ENDPOINT)
+        dispatch({
+            type: PRODUCT_TOP_RATED_SUCCESS,
+            payload: data
+        })
+
+    }catch(error) {
+        dispatch({
+            type: PRODUCT_TOP_RATED_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message
