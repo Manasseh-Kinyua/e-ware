@@ -86,7 +86,7 @@ def createProductReview(request, pk):
     product = Product.objects.get(_id=pk)
     data = request.data
 
-    alreadyExists = Product.review_set.filter(user=user).exists()
+    alreadyExists = product.review_set.filter(user=user).exists()
 
     # (1) if user has already written a review
     if alreadyExists:
