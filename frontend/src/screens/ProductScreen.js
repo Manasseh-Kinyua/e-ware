@@ -157,7 +157,7 @@ function ProductScreen() {
         <h4>Reviews</h4>
         {product.reviews.length === 0 && <Message severity='info' error='No reviews for this product yet' />}
         {product.reviews && product.reviews.map(review => (
-          <ListGroup key={review._id}>
+          <ListGroup variant='flush' key={review._id}>
             <ListGroup.Item>
               <strong>@{review.name}</strong>
               <Rating value={review.rating} color={'#f8e825'} />
