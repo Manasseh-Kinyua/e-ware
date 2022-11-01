@@ -155,11 +155,16 @@ function ProductScreen() {
         </Col>
         <Col md={4}>
         <h4>Reviews</h4>
-        {product.reviews && product.reviews.length === 0 && <Message severity='info' error='No reviews for this product yet' />}
+        {product.reviews.length === 0 && <Message severity='info' error='No reviews for this product yet' />}
         {product.reviews && product.reviews.map(review => (
-          <ListGroup.Item key={review._id}>
-            <strong>{review.name}</strong>
-          </ListGroup.Item>
+          <ListGroup key={review._id}>
+            <ListGroup.Item>
+              <strong>@{review.name}</strong>
+              <Rating value={review.rating} color={'#f8e825'} />
+              <p>{review.createdAt.substring(0,10)}</p>
+              <p>{review.comment}</p>
+            </ListGroup.Item>
+          </ListGroup>
         ))}
         </Col>
         <Col md={4}>
